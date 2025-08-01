@@ -7,6 +7,18 @@ const authOptions:NextAuthOptions= {
         clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
     })
  ],
+ callbacks: {
+  async signIn(params) {
+     console.log(params.credentials,'params');
+     console.log(params.account,'params');
+     console.log(params.email,'params');
+     console.log(params.profile,'params');
+     console.log(params.user,'params');
+
+
+     return true
+  },
+ },
  pages: {
     signIn: "/login",
  },
