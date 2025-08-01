@@ -3,8 +3,8 @@ import React from "react";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="min-h-screen w-full bg-primary-100 p-5 flex overflow-hidden">
-      <div className="max-w-5xl m-auto w-full sm:h-[500px]  rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] overflow-hidden bg-white transition-shadow duration-300 hover:shadow-[0_15px_35px_rgba(0,0,0,0.2)]">
+    <div className="min-h-screen w-full bg-primary-100 p-3 justify-center items-start sm:justify-start  sm:p-5 flex overflow-hidden">
+      <div className="max-w-5xl sm:m-auto w-full sm:h-[500px]  rounded-2xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] overflow-hidden bg-white transition-shadow duration-300 hover:shadow-[0_15px_35px_rgba(0,0,0,0.2)]">
         <div className="flex flex-col lg:flex-row h-[100%]">
           {/* Left Image Section */}
           <div className="w-full lg:w-1/2 h-full lg:h-auto relative hidden sm:block">
