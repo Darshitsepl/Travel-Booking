@@ -3,7 +3,7 @@ import { AiFillGooglePlusCircle } from "react-icons/ai";
 import Form from "@/components/Auth/Form";
 import { Button } from "@/components/ui/button";
 import { LoginFormValues } from "@/model/FormModel";
-import { Icon } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
@@ -40,20 +40,22 @@ const Login = () => {
 						errors={errors}
 					/>
 				</form>
-        
 			</div>
-      <div className="divider">
-        <h4>OR</h4>
-      </div>
-      <div className="flex justify-center items-center flex-col gap-2">
-        <Button  className="bg-red-500 flex gap-2 items-center w-full sm:w-1/2">
-           <AiFillGooglePlusCircle />
-           <span className="text-white">Continue with Google</span>
-        </Button>
-        <Link href={'/signup'} className="text-[12px] text-slate-400">
-         Don’t have account? Register Now
-        </Link>
-      </div>
+			<div className="divider">
+				<h4>OR</h4>
+			</div>
+			<div className="flex justify-center items-center flex-col gap-2">
+				<Button className="flex items-center gap-2 w-full sm:w-1/2 px-4 py-2 border border-gray-300 bg-white hover:bg-gray-100 rounded-md shadow-sm transition-all duration-200">
+					<FaGoogle className="text-[#4285F4]" />
+					<span className="text-sm text-gray-700 font-medium">
+						Continue with Google
+					</span>
+				</Button>
+
+				<Link href={"/signup"} className="text-[12px] text-slate-400">
+					Don’t have account? Register Now
+				</Link>
+			</div>
 		</div>
 	);
 };
