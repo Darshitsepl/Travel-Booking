@@ -52,7 +52,7 @@ const Login = () => {
 				<Button
 					disabled={isLoading}
 					onClick={handlerLoginWithGoogle}
-					className="flex items-center gap-2 w-full sm:w-1/2 px-4 py-2 border border-gray-300 bg-white hover:bg-gray-100 rounded-md shadow-sm transition-all duration-200"
+					className="flex items-center gap-2 w-full md:w-1/2 px-4 py-2 border border-gray-300 bg-white hover:bg-gray-100 rounded-md shadow-sm transition-all duration-200"
 				>
 					{isLoading ? (
 						<span className="text-gray-700">Loading...</span>
