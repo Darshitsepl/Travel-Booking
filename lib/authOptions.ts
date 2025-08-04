@@ -1,5 +1,3 @@
-import { loginWithGoogle, LoginWithGoogleFields } from "@/service/Auth";
-import { endPoints } from "@/service/endPoints";
 import { NextAuthOptions } from "next-auth"
 import GoogleProvider from 'next-auth/providers/google';
 import createConnection from "./dbConnection";
@@ -44,7 +42,14 @@ const authOptions: NextAuthOptions = {
                })
 
 
+            }else {
+  await Token.create({
+                  token,
+                  userId: isUserFound._id,
+                  expires_at
+               })
             }
+           
             return true
          }
 
@@ -72,10 +77,11 @@ const authOptions: NextAuthOptions = {
 
          if (user) {
             await createConnection();
-            const userId = await User.findOne({ email: user.email })
+            const userId = await User.findOne({ email: user.email });
             const currentUserToken = await Token.findOne({ userId: userId?._id });
+            token.userId = userId?._id.toString()
+
             if (currentUserToken) {
-               token.userId = userId?._id.toString()
                token.accessToken = currentUserToken.token;
             }
 
