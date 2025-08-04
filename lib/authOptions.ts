@@ -27,6 +27,8 @@ const authOptions: NextAuthOptions = {
             };
             await createConnection();
             const { email, token, expires_at } = payload;
+
+            const formattedExpireat = new Date(expires_at! * 1000)
             const isUserFound = await User.findOne({ email });
             if (!isUserFound) {
                //create user and get id;
@@ -38,18 +40,18 @@ const authOptions: NextAuthOptions = {
                await Token.create({
                   token,
                   userId: newUser._id,
-                  expires_at
+                  expires_at: formattedExpireat
                })
 
 
-            }else {
-  await Token.create({
+            } else {
+               await Token.create({
                   token,
                   userId: isUserFound._id,
-                  expires_at
+                  expires_at: formattedExpireat
                })
             }
-           
+
             return true
          }
 
@@ -63,6 +65,7 @@ const authOptions: NextAuthOptions = {
                user: {
                   ...session.user,
                   accessToken: token?.accessToken,
+                  exptime: token?.exptime,
                   userId: token?.userId?.toString()
 
                }
@@ -82,6 +85,7 @@ const authOptions: NextAuthOptions = {
             token.userId = userId?._id.toString()
 
             if (currentUserToken) {
+               token.exptime = currentUserToken.expires_at
                token.accessToken = currentUserToken.token;
             }
 

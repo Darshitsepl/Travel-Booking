@@ -4,6 +4,7 @@ import Provider from "@/Layout/Provider";
 import { getServerSession } from "next-auth";
 import authOptions from "@/lib/authOptions";
 import {Roboto} from 'next/font/google'
+import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -31,6 +32,8 @@ export default async function RootLayout({
        <Provider session ={session}>
          {children}
        </Provider>
+         <Toaster/>
+
       </body>
     </html>
   );
