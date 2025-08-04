@@ -8,7 +8,8 @@ const Header = () => {
   return (
     <div>
         <button type="button" onClick={async () => {
-          const userId = data?.user ? data?.user.userId as string : "";
+          const newData:any = {...data}
+          const userId = newData?.user ? newData?.user.userId as string : "";
           const response =await (await fetch('/api/signout', {
             method: "POST",
             body: JSON.stringify({
