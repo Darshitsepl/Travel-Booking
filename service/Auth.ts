@@ -13,9 +13,7 @@ export type LoginWithGoogleFields = {
 }
 export const loginWithGoogle = async (data: LoginWithGoogleFields) => {
     try {
-        console.log(data,'data')
         const response = await APIClient.post(endPoints.loginWithGoogle, data);
-        console.log(response, 'response')
     } catch (error) {
         return error
     }
