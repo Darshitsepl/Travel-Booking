@@ -24,7 +24,7 @@ const authOptions: NextAuthOptions = {
                ...user,
                email: user.email,
                password: "",
-               
+
                token: account.access_token!,
             };
             await createConnection();
@@ -52,16 +52,13 @@ const authOptions: NextAuthOptions = {
       },
       async session({ token, session }) {
          if (session) {
-             await createConnection(); 
-            const currentUserInfo = await User.findOne({ email: token.email });
-            const currentUserToken = await Token.findOne({ userId: currentUserInfo?._id });
 
             return {
                ...session,
                user: {
                   ...session.user,
-                  accessToken: currentUserToken?.token,
-                  userId: currentUserInfo?._id?.toString()
+                  accessToken: token?.accessToken,
+                  userId: token?.userId?.toString()
 
                }
             }
@@ -70,15 +67,15 @@ const authOptions: NextAuthOptions = {
          return session
 
       },
-      
+
       async jwt({ user, token }) {
 
          if (user) {
- await createConnection(); 
+            await createConnection();
             const userId = await User.findOne({ email: user.email })
             const currentUserToken = await Token.findOne({ userId: userId?._id });
             if (currentUserToken) {
-
+               token.userId = userId?._id.toString()
                token.accessToken = currentUserToken.token;
             }
 
