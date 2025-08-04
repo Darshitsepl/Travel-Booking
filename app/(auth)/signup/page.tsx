@@ -1,9 +1,6 @@
 "use client";
-import { AiFillGooglePlusCircle } from "react-icons/ai";
 import Form from "@/components/Auth/Form";
-import { Button } from "@/components/ui/button";
 import { LoginFormValues } from "@/model/FormModel";
-import { Icon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
