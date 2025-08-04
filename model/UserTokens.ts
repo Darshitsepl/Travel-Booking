@@ -4,15 +4,15 @@ const TokensSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
-     required: true
+    required: true
   },
   expires_at: Date,
   token: {
-    type:String,
+    type: String,
     required: true
   }
 }, {
-    timestamps: true
+  timestamps: true
 });
 
-export const Token =mongoose.models.token || mongoose.model('token', TokensSchema);
+export const Token = mongoose.models.token || mongoose.model('token', TokensSchema);

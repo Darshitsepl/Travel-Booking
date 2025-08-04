@@ -1,31 +1,17 @@
-'use client'
-import { signOut, useSession } from 'next-auth/react'
-import React from 'react'
+"use client";
+import { useAuth } from "@/context/Auth";
+import React from "react";
 
 const Header = () => {
-  const {data} = useSession();
+  const {onLogOut} = useAuth()
 
-  return (
-    <div>
-        <button type="button" onClick={async () => {
-          const newData:any = {...data}
-          const userId = newData?.user ? newData?.user.userId as string : "";
-          const response =await (await fetch('/api/signout', {
-            method: "POST",
-            body: JSON.stringify({
-              userId
-            })
-          })).json();
-          if(response.status) {
-    await signOut({
-            redirect: true,
-            callbackUrl: "/login"
-          })
-          }
-      
-        }}>Log out</button>
-    </div>
-  )
-}
+	return (
+		<div>
+			<button type="button" onClick={onLogOut}>
+				Log out
+			</button>
+		</div>
+	);
+};
 
-export default Header
+export default Header;
