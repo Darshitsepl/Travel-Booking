@@ -52,6 +52,7 @@ const authOptions: NextAuthOptions = {
       },
       async session({ token, session }) {
          if (session) {
+             await createConnection(); 
             const currentUserInfo = await User.findOne({ email: token.email });
             const currentUserToken = await Token.findOne({ userId: currentUserInfo?._id });
 
@@ -69,10 +70,11 @@ const authOptions: NextAuthOptions = {
          return session
 
       },
+      
       async jwt({ user, token }) {
 
          if (user) {
-
+ await createConnection(); 
             const userId = await User.findOne({ email: user.email })
             const currentUserToken = await Token.findOne({ userId: userId?._id });
             if (currentUserToken) {
