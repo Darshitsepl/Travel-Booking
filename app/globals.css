@@ -147,6 +147,6 @@
     }
 
     .error-message {
-        @apply text-xl text-error font-semibold;
+        @apply text-[12px] text-error font-semibold;
     }
 }

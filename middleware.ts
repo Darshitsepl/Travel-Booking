@@ -11,6 +11,10 @@ export default async function middleware(req: NextRequest) {
     const { pathname } = req.nextUrl;
     const ignorePaths = ['/login', '/signup'];
 
+       if (pathname.startsWith('/api')) {
+        return NextResponse.next();
+    }
+
     // Allow access to ignored paths
     if (ignorePaths.includes(pathname)) {
         return NextResponse.next();

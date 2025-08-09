@@ -1,10 +1,11 @@
-'use client'
+"use client";
 import React, { FC } from "react";
 import {
 	Control,
 	FieldErrors,
 	RegisterOptions,
 	UseFormGetValues,
+	UseFormHandleSubmit,
 	UseFormSetValue,
 	UseFormWatch,
 } from "react-hook-form";
@@ -17,10 +18,14 @@ export interface Props {
 	isSignUpPage?: boolean;
 	setValue: UseFormSetValue<any>;
 	control: Control<any, any>;
+	handlerRegister: (data: any) => void;
+	handleSubmit: UseFormHandleSubmit<any>;
 	errors: FieldErrors<any>;
 }
 const Form: FC<Props> = ({
 	watch,
+	handleSubmit,
+	handlerRegister,
 	getValues,
 	setValue,
 	control,
@@ -32,49 +37,55 @@ const Form: FC<Props> = ({
 			{isSignUpPage && (
 				<CustomInput
 					rules={{
-                        required: true
-                    }}
+						required: "Please enter name",
+					}}
 					value=""
 					placeholder="User Name"
-					name={"username"}
+					name={"name"}
 					control={control}
 					errors={errors}
 				/>
 			)}
 			<CustomInput
-			rules={{
-                        required: true
-                    }}
+				rules={{
+					required: "Please enter email",
+				}}
 				value=""
 				placeholder="Email"
-                type="email"
+				type="email"
 				name={"email"}
 				control={control}
 				errors={errors}
 			/>
 			<CustomInput
 				rules={{
-                        required: true,
-                        min: {
-                            value:6,
-                            message: "Minimum 6 digit password required"
-                        }
-                    }}
+					required: "Please enter password",
+					min: {
+						value: 6,
+						message: "Minimum 6 digit password required",
+					},
+				}}
 				value=""
 				placeholder="Password"
-                type='password'
+				type="password"
 				name={"password"}
 				control={control}
 				errors={errors}
 			/>
-            {!isSignUpPage && <div className="mt-0/5 text-slate-400">
-                 <h4 className="text-right text-[12px]">Forgot password</h4>
-            </div>}
-           <div className="flex justify-center items-center">
-             <Button className="bg-primary-400 w-full sm:w-1/2 justify-center" type="submit">
-                {!isSignUpPage ? 'Login' : "Sign Up"}
-            </Button>
-           </div>
+			{!isSignUpPage && (
+				<div className="mt-0/5 text-slate-400">
+					<h4 className="text-right text-[12px]">Forgot password</h4>
+				</div>
+			)}
+			<div className="flex justify-center items-center">
+				<Button
+					onClick={handleSubmit(handlerRegister)}
+					className="bg-primary-400 w-full sm:w-1/2 justify-center"
+					type="submit"
+				>
+					{!isSignUpPage ? "Login" : "Sign Up"}
+				</Button>
+			</div>
 		</div>
 	);
 };
