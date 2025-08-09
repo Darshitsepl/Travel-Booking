@@ -97,6 +97,7 @@ const authOptions: NextAuthOptions = {
             const currentUserToken = await Token.findOne({ userId: userId?._id });
             token.userId = userId?._id.toString()
             token.name = userId?.username;
+            token.role = userId?.role;
             
             if (currentUserToken) {
                token.exptime = currentUserToken.expires_at
@@ -116,6 +117,7 @@ const authOptions: NextAuthOptions = {
                user: {
                   ...session.user,
                   name: token.name ?? session.user.name,
+                  role: token.role,
                   accessToken: token?.accessToken,
                   exptime: token?.exptime,
                   userId: token?.userId?.toString()
