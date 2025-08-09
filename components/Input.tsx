@@ -55,8 +55,8 @@ const CustomInput: FC<InputProps> = ({
 					}}
 				/>
 			)}
-			{errors?.root?.message && (
-				<h2 className="error-message">{errors?.root?.message}</h2>
+			{errors && errors[name] && (
+				<h2 className="error-message">{errors[name]?.message as string}</h2>
 			)}
 		</div>
 	);

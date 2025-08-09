@@ -1,3 +1,4 @@
+import { AxiosError, AxiosResponse } from "axios";
 import { endPoints } from "./endPoints";
 import APIClient from "./interceptor"
 
@@ -18,3 +19,38 @@ export const loginWithGoogle = async (data: LoginWithGoogleFields) => {
         return error
     }
 }
+
+
+export const register = async (
+  data: LoginWithGoogleFields
+): Promise<AxiosResponse<any, any>> => {
+  try {
+    const response = await APIClient.post(endPoints.regiser, data)
+    return response
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      throw error
+    }
+    throw new Error("Unexpected error occurred")
+  }
+}
+
+
+export async function handleApi<T>(
+  fn: () => Promise<AxiosResponse<T>>
+): Promise<{ data?: T; error?: string }> {
+  try {
+    const res = await fn()
+    return { data: res.data }
+  } catch (err) {
+    if (err instanceof AxiosError) {
+        console.log(err,'err')
+      return { error: err.response?.data?.error || err.message }
+    }
+    if (err instanceof Error) {
+      return { error: err.message }
+    }
+    return { error: "Something went wrong" }
+  }
+}
+

@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth"
 import GoogleProvider from 'next-auth/providers/google';
+import CredentialsProvider from "next-auth/providers/credentials";
 import createConnection from "./dbConnection";
 import { User } from "@/model/User";
 import { Token } from "@/model/UserTokens";
@@ -9,6 +10,38 @@ const authOptions: NextAuthOptions = {
       GoogleProvider({
          clientId: process.env.GOOGLE_CLIENT_ID as string,
          clientSecret: process.env.GOOGLE_CLIENT_SECRET as string
+      }),
+      CredentialsProvider({
+         name: "credentials",
+         credentials: {
+            username: { label: "User Name", type: "text" },
+            email: { label: "Email", type: "text" },
+            loginType: {label: "Login Type", type: "text"},
+            password: { label: "Password", type: "text" },
+            token: { label: "Token", type: 'text' },
+            exptime: { label: "Expiry Time", type: 'text' },
+            role: { label: 'Role', type: "text" },
+            image: { label: 'image', type: "text" },
+            userId: {label: "User Id", type: "text"}
+
+
+         },
+         async authorize(credentials) {
+            if (credentials) {
+               const { exptime } = credentials;
+               if (new Date(exptime).getTime() < new Date().getTime()) {
+                  return null
+               }
+
+               return {
+                  ...credentials,
+                  id:credentials.userId,
+                  loginType: 'credentials'
+               };
+            }
+
+            return null
+         },
       })
    ],
    callbacks: {
@@ -45,17 +78,35 @@ const authOptions: NextAuthOptions = {
 
 
             } else {
-               await Token.create({
-                  token,
-                  userId: isUserFound._id,
-                  expires_at: formattedExpireat
-               })
+               await Token.findOneAndUpdate({ userId: isUserFound._id },
+                  { token, expires_at: formattedExpireat },
+                  { upsert: true, new: true })
             }
 
             return true
          }
 
+         
          return true
+      },
+      async jwt({ user, token }) {
+         
+         if (user) {
+            await createConnection();
+            const userId = await User.findOne({ email: user.email });
+            const currentUserToken = await Token.findOne({ userId: userId?._id });
+            token.userId = userId?._id.toString()
+            token.name = userId?.username;
+            
+            if (currentUserToken) {
+               token.exptime = currentUserToken.expires_at
+               token.accessToken = currentUserToken.token;
+            }
+
+            return token
+         }
+
+         return token
       },
       async session({ token, session }) {
          if (session) {
@@ -64,6 +115,7 @@ const authOptions: NextAuthOptions = {
                ...session,
                user: {
                   ...session.user,
+                  name: token.name ?? session.user.name,
                   accessToken: token?.accessToken,
                   exptime: token?.exptime,
                   userId: token?.userId?.toString()
@@ -76,24 +128,7 @@ const authOptions: NextAuthOptions = {
 
       },
 
-      async jwt({ user, token }) {
-
-         if (user) {
-            await createConnection();
-            const userId = await User.findOne({ email: user.email });
-            const currentUserToken = await Token.findOne({ userId: userId?._id });
-            token.userId = userId?._id.toString()
-
-            if (currentUserToken) {
-               token.exptime = currentUserToken.expires_at
-               token.accessToken = currentUserToken.token;
-            }
-
-            return token
-         }
-
-         return token
-      },
+     
 
    }
    ,

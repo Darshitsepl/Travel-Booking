@@ -1,5 +1,4 @@
 "use client";
-import { AiFillGooglePlusCircle } from "react-icons/ai";
 import Form from "@/components/Auth/Form";
 import { Button } from "@/components/ui/button";
 import { LoginFormValues } from "@/model/FormModel";
@@ -8,24 +7,51 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
+import { handleApi, LoginWithGoogleFields } from "@/service/Auth";
+import APIClient from "@/service/interceptor";
+import { endPoints } from "@/service/endPoints";
+import { toast } from "sonner";
 
-const defaultValues: LoginFormValues = {
-	name: "",
-	email: "",
-	password: "",
-};
 const Login = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const {
 		getValues,
 		setValue,
 		watch,
+		handleSubmit,
 		control,
 		formState: { errors },
 	} = useForm<LoginFormValues>();
 	useEffect(() => {
 		document.body.style.overflow = "hidden";
 	}, []);
+
+	const handlerLogin = async (FormData: LoginFormValues) => {
+		const payload: LoginWithGoogleFields = {
+			...FormData,
+			username: FormData.name,
+			loginType: "credentials",
+		};
+		const { data, error } = await handleApi(() =>
+			APIClient.post(endPoints.login, payload)
+		);
+
+		if (data && data.status) {
+			await signIn("credentials", {
+				...data.data,
+				callbackUrl: "/",
+				redirect: true,
+				token: data.data.token,
+			});
+		}
+
+		if (error) {
+			toast(error);
+		} else {
+			console.log("Success:", data);
+		}
+	};
+
 	const handlerLoginWithGoogle = async () => {
 		setIsLoading(true);
 		await signIn("google", { redirect: true, callbackUrl: "/" });
@@ -42,6 +68,8 @@ const Login = () => {
 						watch={watch}
 						control={control}
 						errors={errors}
+						handleSubmit={handleSubmit}
+						handlerRegister={handlerLogin}
 					/>
 				</form>
 			</div>
