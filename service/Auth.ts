@@ -44,7 +44,6 @@ export async function handleApi<T>(
     return { data: res.data }
   } catch (err) {
     if (err instanceof AxiosError) {
-        console.log(err,'err')
       return { error: err.response?.data?.error || err.message }
     }
     if (err instanceof Error) {

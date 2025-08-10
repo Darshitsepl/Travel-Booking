@@ -11,6 +11,7 @@ import {
 } from "react-hook-form";
 import CustomInput from "../Input";
 import { Button } from "../ui/button";
+import Link from "next/link";
 
 export interface Props {
 	watch: UseFormWatch<any>;
@@ -73,8 +74,8 @@ const Form: FC<Props> = ({
 				errors={errors}
 			/>
 			{!isSignUpPage && (
-				<div className="mt-0/5 text-slate-400">
-					<h4 className="text-right text-[12px]">Forgot password</h4>
+				<div className="mt-0/5 text-slate-400 text-end">
+					<Link href={'/forgot-password'}  className="text-right text-[16px]">Forgot password</Link>
 				</div>
 			)}
 			<div className="flex justify-center items-center">
