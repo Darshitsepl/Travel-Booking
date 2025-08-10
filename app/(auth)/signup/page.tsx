@@ -1,7 +1,7 @@
 "use client";
 import Form from "@/components/Auth/Form";
 import { LoginFormValues } from "@/model/FormModel";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { handleApi, LoginWithGoogleFields, register } from "@/service/Auth";
@@ -10,11 +10,6 @@ import APIClient from "@/service/interceptor";
 import { endPoints } from "@/service/endPoints";
 import { signIn } from "next-auth/react";
 
-const defaultValues: LoginFormValues = {
-	name: "",
-	email: "",
-	password: "",
-};
 const SignUp = () => {
 	const {
 		getValues,
@@ -24,10 +19,12 @@ const SignUp = () => {
 		control,
 		formState: { errors },
 	} = useForm<LoginFormValues>();
+	const [isLoading, setIsLoading] = useState(false);
 	useEffect(() => {
 		document.body.style.overflow = "hidden";
 	}, []);
 	const handlerRegister = async (FormData: LoginFormValues) => {
+		setIsLoading(true)
 		const payload: LoginWithGoogleFields = {
 			...FormData,
 			username: FormData.name,
@@ -36,6 +33,7 @@ const SignUp = () => {
 		const { data, error } = await handleApi(() =>
 			APIClient.post(endPoints.regiser, payload)
 		);
+		setIsLoading(false)
 		if(data.status) {
 			console.log(data, 'data')
 			await signIn('credentials', {
@@ -64,6 +62,7 @@ const SignUp = () => {
 						handleSubmit={handleSubmit}
 						isSignUpPage={true}
 						watch={watch}
+						isLoading ={isLoading}
 						control={control}
 						errors={errors}
 					/>
