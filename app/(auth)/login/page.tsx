@@ -13,7 +13,6 @@ import { endPoints } from "@/service/endPoints";
 import { toast } from "sonner";
 
 const Login = () => {
-	const [isLoading, setIsLoading] = useState(false);
 	const {
 		getValues,
 		setValue,
@@ -22,6 +21,7 @@ const Login = () => {
 		control,
 		formState: { errors },
 	} = useForm<LoginFormValues>();
+    const [isLoading, setIsLoading] = useState(false);
 	useEffect(() => {
 		document.body.style.overflow = "hidden";
 	}, []);
@@ -32,10 +32,10 @@ const Login = () => {
 			username: FormData.name,
 			loginType: "credentials",
 		};
+		setIsLoading(true)
 		const { data, error } = await handleApi(() =>
 			APIClient.post(endPoints.login, payload)
 		);
-
 		if (data && data.status) {
 			await signIn("credentials", {
 				...data.data,
@@ -45,6 +45,7 @@ const Login = () => {
 			});
 		}
 
+		setIsLoading(false)
 		if (error) {
 			toast(error);
 		} else {
@@ -66,6 +67,7 @@ const Login = () => {
 						getValues={getValues}
 						setValue={setValue}
 						watch={watch}
+						isLoading={isLoading}
 						control={control}
 						errors={errors}
 						handleSubmit={handleSubmit}

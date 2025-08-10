@@ -1,6 +1,10 @@
+import { Metadata } from "next";
 import Image from "next/image";
 import React from "react";
 
+export const metadata: Metadata = {
+  title: "Auth",
+};
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="min-h-screen w-full bg-primary-100 p-3 justify-center items-start sm:justify-start  sm:p-5 flex overflow-hidden">
