@@ -1,5 +1,4 @@
 import axios from "axios";
-console.log('env',process.env.NEXT_PUBLIC_BASE_URL)
 const APIClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
  

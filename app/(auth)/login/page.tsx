@@ -48,9 +48,7 @@ const Login = () => {
 		setIsLoading(false)
 		if (error) {
 			toast(error);
-		} else {
-			console.log("Success:", data);
-		}
+		} 
 	};
 
 	const handlerLoginWithGoogle = async () => {

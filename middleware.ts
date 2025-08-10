@@ -9,7 +9,7 @@ export default async function middleware(req: NextRequest) {
 
 
     const { pathname } = req.nextUrl;
-    const ignorePaths = ['/login', '/signup'];
+    const ignorePaths = ['/login', '/signup','/forgot-password','/reset-password'];
 
        if (pathname.startsWith('/api')) {
         return NextResponse.next();

@@ -10,6 +10,11 @@ const TokensSchema = new mongoose.Schema({
   token: {
     type: String,
     required: true
+  },
+  type: {
+    type: String,
+    enum: ['login', 'reset-token'],
+    default: 'login'
   }
 }, {
   timestamps: true

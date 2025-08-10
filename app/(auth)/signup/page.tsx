@@ -35,7 +35,6 @@ const SignUp = () => {
 		);
 		setIsLoading(false)
 		if(data.status) {
-			console.log(data, 'data')
 			await signIn('credentials', {
 				...data.data,
 				callbackUrl: "/",
@@ -46,9 +45,7 @@ const SignUp = () => {
 
 		if (error) {
 			toast(error);
-		} else {
-			console.log("Success:", data);
-		}
+		} 
 	};
 	return (
 		<div className="flex flex-col gap-3">

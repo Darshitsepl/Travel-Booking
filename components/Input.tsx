@@ -1,65 +1,98 @@
-'use client'
-
-import React, { FC } from "react";
-import { Input } from "./ui/input";
-import { InputProps } from "@/model/model";
+import { FC, useState } from "react";
 import { Controller } from "react-hook-form";
+import { Input } from "@/components/ui/input"; // your existing Input component
+import { FaEye, FaEyeSlash } from "react-icons/fa"; // eye icons
+import { InputProps } from "@/model/model";
 
 const CustomInput: FC<InputProps> = ({
-	name,
-	control,
-	type,
-	value,
-	onChange: onParentChange,
-	errors,
-	placeholder,
-	rules,
+  name,
+  control,
+  type,
+  value,
+  onChange: onParentChange,
+  errors,
+  placeholder,
+  rules,
 }) => {
-	const inputClass =
-		"border border-primary-300 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 rounded-md px-3 py-2 text-sm outline-none transition-colors";
+  const [showPassword, setShowPassword] = useState(false);
 
-	return (
-		<div className="flex flex-col gap-1 text-left">
-            <label id={name} className="text-[12px]">{placeholder} :</label>
-			{control ? (
-				<Controller
-					name={name}
-					control={control}
-					rules={rules}
-					render={({ field: { onChange, value } }) => (
-						<Input
-							type={type ?? 'text'}
-							placeholder={placeholder}
-							value={value}
-							className={inputClass}
-							onChange={(e) => {
-								onChange(e.target.value);
-								if (onParentChange) {
-									onParentChange(e.target.value);
-								}
-							}}
-						/>
-					)}
-				/>
-			) : (
-				<Input
-					value={value}
-					name={name}
-					type={type ?? 'text'}
-					placeholder={placeholder}
-					className={inputClass}
-					onChange={(e) => {
-						if (onParentChange) {
-							onParentChange(e.target.value);
-						}
-					}}
-				/>
-			)}
-			{errors && errors[name] && (
-				<h2 className="error-message">{errors[name]?.message as string}</h2>
-			)}
-		</div>
-	);
+  const inputClass =
+    "border border-primary-300 focus:border-primary-500 focus:ring-1 focus:ring-primary-500 rounded-md px-3 py-2 text-sm outline-none transition-colors";
+
+  const togglePassword = () => setShowPassword((prev) => !prev);
+
+  // Determine type for input (for password fields)
+  const computedType =
+    type === "password" ? (showPassword ? "text" : "password") : type ?? "text";
+
+  return (
+    <div className="flex flex-col gap-1 text-left">
+      <label id={name} className="text-[12px]">
+        {placeholder} :
+      </label>
+
+      <div className="relative">
+        {control ? (
+          <Controller
+            name={name}
+            control={control}
+            rules={rules}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <Input
+                  type={computedType}
+                  placeholder={placeholder}
+                  value={value}
+                  className={`${inputClass} pr-10`} // extra padding for icon
+                  onChange={(e) => {
+                    onChange(e.target.value);
+                    if (onParentChange) {
+                      onParentChange(e.target.value);
+                    }
+                  }}
+                />
+                {type === "password" && (
+                  <span
+                    onClick={togglePassword}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+                  >
+                    {showPassword ? <FaEyeSlash /> : <FaEye />}
+                  </span>
+                )}
+              </>
+            )}
+          />
+        ) : (
+          <>
+            <Input
+              value={value}
+              name={name}
+              type={computedType}
+              placeholder={placeholder}
+              className={`${inputClass} pr-10`}
+              onChange={(e) => {
+                if (onParentChange) {
+                  onParentChange(e.target.value);
+                }
+              }}
+            />
+            {type === "password" && (
+              <span
+                onClick={togglePassword}
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </span>
+            )}
+          </>
+        )}
+      </div>
+
+      {errors && errors[name] && (
+        <h2 className="error-message">{errors[name]?.message as string}</h2>
+      )}
+    </div>
+  );
 };
 
 export default CustomInput;
