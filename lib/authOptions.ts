@@ -54,7 +54,6 @@ const authOptions: NextAuthOptions = {
                username: user.name!,
                ...user,
                email: user.email,
-               password: "",
 
                token: account.access_token!,
             };
