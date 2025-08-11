@@ -24,7 +24,7 @@ const SignUp = () => {
 		document.body.style.overflow = "hidden";
 	}, []);
 	const handlerRegister = async (FormData: LoginFormValues) => {
-		setIsLoading(true)
+		setIsLoading(true);
 		const payload: LoginWithGoogleFields = {
 			...FormData,
 			username: FormData.name,
@@ -33,19 +33,20 @@ const SignUp = () => {
 		const { data, error } = await handleApi(() =>
 			APIClient.post(endPoints.regiser, payload)
 		);
-		setIsLoading(false)
-		if(data.status) {
-			await signIn('credentials', {
+		if (data.status) {
+			await signIn("credentials", {
 				...data.data,
 				callbackUrl: "/",
 				redirect: true,
 				token: data.data.token,
-			})
+			});
+			setIsLoading(false);
+		} else {
+			setIsLoading(false);
 		}
-
 		if (error) {
 			toast(error);
-		} 
+		}
 	};
 	return (
 		<div className="flex flex-col gap-3">
@@ -59,7 +60,7 @@ const SignUp = () => {
 						handleSubmit={handleSubmit}
 						isSignUpPage={true}
 						watch={watch}
-						isLoading ={isLoading}
+						isLoading={isLoading}
 						control={control}
 						errors={errors}
 					/>

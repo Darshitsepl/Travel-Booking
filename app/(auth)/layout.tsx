@@ -4,6 +4,11 @@ import React from "react";
 
 export const metadata: Metadata = {
   title: "Auth",
+  icons: {
+      icon: "../public/travel.png",
+    },
+    description:
+      "Discover and book unforgettable tours worldwide with Travel Booking. Explore destinations, compare packages, make secure bookings, and share your experiences by leaving ratings and reviews.",
 };
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
