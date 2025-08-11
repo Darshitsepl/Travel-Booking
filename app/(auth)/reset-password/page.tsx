@@ -1,5 +1,4 @@
 import ResetPasswordForm from "@/components/Auth/ResetPasswordForm";
-import Link from "next/link";
 import React from "react";
 
 const ResetPassword = async ({

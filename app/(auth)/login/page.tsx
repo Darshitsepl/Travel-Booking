@@ -43,9 +43,13 @@ const Login = () => {
 				redirect: true,
 				token: data.data.token,
 			});
+		setIsLoading(false)
+
+		}else {
+		setIsLoading(false)
+
 		}
 
-		setIsLoading(false)
 		if (error) {
 			toast(error);
 		} 
