@@ -61,7 +61,7 @@ const authOptions: NextAuthOptions = {
             const { email, token, expires_at } = payload;
 
             const formattedExpireat = new Date(expires_at! * 1000)
-            const isUserFound = await User.findOne({ email });
+            const isUserFound = await User.findOne({ email,isactive: true });
             if (!isUserFound) {
                //create user and get id;
                const newUser = await User.create({
@@ -92,7 +92,7 @@ const authOptions: NextAuthOptions = {
          
          if (user) {
             await createConnection();
-            const userId = await User.findOne({ email: user.email });
+            const userId = await User.findOne({ email: user.email,isactive: true });
             const currentUserToken = await Token.findOne({ userId: userId?._id });
             token.userId = userId?._id.toString()
             token.name = userId?.username;
