@@ -7,6 +7,7 @@ import { toast } from 'sonner';
 interface AuthContextProps {
     onLogOut: () => void;
 	isOpen: boolean;
+	setIsLoading?:React.Dispatch<SetStateAction<boolean>>
 	setIsOpen?: React.Dispatch<SetStateAction<boolean>>
 }
 const authContext = createContext<AuthContextProps>({
@@ -72,6 +73,7 @@ const AuthContext = ({
     const ctx:AuthContextProps ={
         onLogOut: handlerLogOut,
 		setIsOpen,
+		setIsLoading,
 		isOpen
     }
   return (
