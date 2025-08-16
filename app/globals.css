@@ -150,3 +150,32 @@
         @apply text-[12px] text-error font-semibold;
     }
 }
+
+.swal-confirm-btn {
+  background-color: #2563eb; /* blue */
+  color: white;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+
+.swal-confirm-btn:hover {
+  background-color: #1d4ed8; /* darker blue */
+}
+
+.swal-cancel-btn {
+  background-color: #e5e7eb; /* gray */
+  color: #111827;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.swal-cancel-btn:hover {
+  background-color: #d1d5db;
+}
