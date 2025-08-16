@@ -159,7 +159,7 @@ const Header = () => {
 											src={data?.user?.image as string}
 										/>
 										<AvatarFallback>
-											{data?.user?.name}
+											{data?.user?.name?.substring(0,1)}
 										</AvatarFallback>
 									</Avatar>
 								</div>
@@ -328,7 +328,7 @@ const Header = () => {
 											src={data?.user?.image as string}
 										/>
 										<AvatarFallback>
-											{data?.user?.name}
+											{data?.user?.name?.substring(0,1)}
 										</AvatarFallback>
 									</Avatar>
 								</div>
