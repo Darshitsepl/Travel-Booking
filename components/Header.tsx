@@ -22,7 +22,7 @@ import { MdPassword } from "react-icons/md";
 import { path } from "@/lib/paths";
 
 const Header = () => {
-	const { onLogOut, isOpen, setIsOpen } = useAuth();
+	const { onLogOut, isOpen, setIsOpen,setIsLoading} = useAuth();
 	const { data } = useSession();
 	const role = data?.user?.role as string;
 	const [expandedMenus, setExpandedMenus] = useState<any>({
@@ -46,11 +46,14 @@ const Header = () => {
 			"error",
 			"Confrimation",
 			"Are you sure want to logout?"
-		).then((res) => {
-			if (res.isConfirmed) {
-				onLogOut();
+		).then(async (res) => {
+         if(res.isConfirmed) {
+			if(setIsLoading) {
+		     	setIsLoading(true);
+				 onLogOut();
 			}
-		});
+		 }
+		})
 	};
 
 	const menuItems = [
