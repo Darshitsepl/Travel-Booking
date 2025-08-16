@@ -22,17 +22,16 @@ import { MdPassword } from "react-icons/md";
 import { path } from "@/lib/paths";
 
 const Header = () => {
-	const { onLogOut } = useAuth();
+	const { onLogOut, isOpen, setIsOpen } = useAuth();
 	const { data } = useSession();
 	const role = data?.user?.role as string;
-	const [isOpen, setIsOpen] = useState(false);
 	const [expandedMenus, setExpandedMenus] = useState<any>({
 		tours: false,
 		settings: false,
 	});
 
 	const toggleDrawer = () => {
-		setIsOpen(!isOpen);
+		setIsOpen!(!isOpen);
 	};
 
 	const toggleSubmenu = (menu: any) => {
@@ -43,7 +42,6 @@ const Header = () => {
 	};
 
 	const handlerLogOut = () => {
-		console.log("runnig thsi");
 		AlertMessage(
 			"error",
 			"Confrimation",
@@ -96,7 +94,7 @@ const Header = () => {
 			label: "Review & Feedbacks",
 			icon: Star,
 			accessRole: ["User", "Admin"],
-			href: path.reviews
+			href: path.reviews,
 		},
 		{
 			id: "settings",
@@ -107,13 +105,13 @@ const Header = () => {
 			submenu: [
 				{
 					label: "My Profile",
-					href:path.profile,
+					href: path.profile,
 					icon: User,
 					accessRole: ["User", "Admin"],
 				},
-					{
+				{
 					label: "Change Password",
-					href:path.changePassword,
+					href: path.changePassword,
 					icon: MdPassword,
 					accessRole: ["User", "Admin"],
 				},
@@ -128,17 +126,17 @@ const Header = () => {
 		},
 	];
 
-	console.log(data, "data");
-
 	return (
-		<div className="relative">
+		<div className="relative w-[100vw] h-[60px] bg-primary-100 sm:bg-none sm:w-auto sm:h-auto">
 			{/* Hamburger Menu Button */}
-			<button
-				onClick={toggleDrawer}
-				className="fixed top-4 left-4 z-50 p-2 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition-colors md:hidden"
-			>
-				{isOpen ? <X size={24} /> : <Menu size={24} />}
-			</button>
+			{!isOpen && (
+				<button
+					onClick={toggleDrawer}
+					className="m-2 p-2 mt-3 bg-blue-600 text-white rounded-lg shadow-lg hover:bg-blue-700 transition-colors md:hidden"
+				>
+					{<Menu size={24} />}
+				</button>
+			)}
 
 			{/* Desktop Sidebar */}
 			<div className="hidden md:flex fixed left-0 top-0 h-full w-64 bg-primary-50 shadow-xl border-r border-gray-200 z-40">
@@ -308,11 +306,16 @@ const Header = () => {
 			>
 				<div className="flex flex-col h-full">
 					{/* Header */}
-					<div className="p-3 border-b border-gray-200">
+					<div className="p-3 border-b border-gray-200 flex justify-between items-center">
 						<h1 className="text-xl font-extrabold text-gray-900 tracking-wide flex items-center gap-2 flex-row">
 							<span className="text-blue-600">✈ TRAVEL</span>
 							<span className="text-gray-800">BOOKING</span>
 						</h1>
+						<div className="text-center">
+							<button onClick={toggleDrawer}>
+								<X fontSize={20} />
+							</button>
+						</div>
 					</div>
 
 					{/* Menu Items */}

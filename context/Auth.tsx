@@ -1,20 +1,25 @@
 'use client'
 import Loading from '@/components/Loading';
 import { signOut, useSession } from 'next-auth/react';
-import React, { createContext, useContext, useEffect, useState } from 'react'
+import React, { createContext, SetStateAction, useContext, useEffect, useState } from 'react'
 import { toast } from 'sonner';
 
 interface AuthContextProps {
     onLogOut: () => void;
+	isOpen: boolean;
+	setIsOpen?: React.Dispatch<SetStateAction<boolean>>
 }
 const authContext = createContext<AuthContextProps>({
-    onLogOut: () => {}
+	onLogOut: () => { },
+	isOpen: false,
 })
 const AuthContext = ({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) => {
+		const [isOpen, setIsOpen] = useState(false);
+	
     const [isLoading, setIsLoading] = useState(true)
     const {data,status} = useSession()
 
@@ -65,7 +70,9 @@ const AuthContext = ({
 	}, [data]);
     
     const ctx:AuthContextProps ={
-        onLogOut: handlerLogOut
+        onLogOut: handlerLogOut,
+		setIsOpen,
+		isOpen
     }
   return (
    <authContext.Provider value={ctx}>
