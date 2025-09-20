@@ -1,30 +1,35 @@
-'use client'
-import Loading from '@/components/Loading';
-import { signOut, useSession } from 'next-auth/react';
-import React, { createContext, SetStateAction, useContext, useEffect, useState } from 'react'
-import { toast } from 'sonner';
+"use client";
+import Loading from "@/components/Loading";
+import { signOut, useSession } from "next-auth/react";
+import React, {
+	createContext,
+	SetStateAction,
+	useContext,
+	useEffect,
+	useState,
+} from "react";
+import { toast } from "sonner";
 
 interface AuthContextProps {
-    onLogOut: () => void;
+	onLogOut: () => void;
 	isOpen: boolean;
-	setIsLoading?:React.Dispatch<SetStateAction<boolean>>
-	setIsOpen?: React.Dispatch<SetStateAction<boolean>>
+	setIsLoading?: React.Dispatch<SetStateAction<boolean>>;
+	setIsOpen?: React.Dispatch<SetStateAction<boolean>>;
 }
 const authContext = createContext<AuthContextProps>({
-	onLogOut: () => { },
+	onLogOut: () => {},
 	isOpen: false,
-})
+});
 const AuthContext = ({
-    children,
+	children,
 }: Readonly<{
-    children: React.ReactNode;
+	children: React.ReactNode;
 }>) => {
-		const [isOpen, setIsOpen] = useState(false);
-	
-    const [isLoading, setIsLoading] = useState(true)
-    const {data,status} = useSession()
+	const [isOpen, setIsOpen] = useState(false);
 
-    
+	const [isLoading, setIsLoading] = useState(true);
+	const { data, status } = useSession();
+
 	const handlerLogOut = async () => {
 		try {
 			const newData: any = { ...data };
@@ -56,7 +61,7 @@ const AuthContext = ({
 		}
 	};
 
-    useEffect(() => {
+	useEffect(() => {
 		if (data && data?.user && data?.user.exptime) {
 			/**ExpTime */
 			const expTime = new Date(data?.user.exptime);
@@ -69,22 +74,21 @@ const AuthContext = ({
 			setIsLoading(false);
 		}
 	}, [data]);
-    
-    const ctx:AuthContextProps ={
-        onLogOut: handlerLogOut,
+
+	const ctx: AuthContextProps = {
+		onLogOut: handlerLogOut,
 		setIsOpen,
 		setIsLoading,
-		isOpen
-    }
-  return (
-   <authContext.Provider value={ctx}>
-    {isLoading || status === 'loading' ? <Loading/> : children}
-   </authContext.Provider>
-  )
-}
-
+		isOpen,
+	};
+	return (
+		<authContext.Provider value={ctx}>
+			{isLoading || status === "loading" ? <Loading /> : children}
+		</authContext.Provider>
+	);
+};
 
 export const useAuth = () => {
-    return useContext(authContext)
-}
-export default AuthContext
+	return useContext(authContext);
+};
+export default AuthContext;
