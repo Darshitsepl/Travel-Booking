@@ -1,12 +1,39 @@
 import { HttpLink } from "@apollo/client";
 import { InMemoryCache, ApolloClient } from "@apollo/client";
 import { SetContextLink } from "@apollo/client/link/context";
-import { getSession } from "next-auth/react";
+import {ErrorLink } from '@apollo/client/link/error';
+ import {
+   CombinedGraphQLErrors,
+   CombinedProtocolErrors,
+ } from "@apollo/client/errors";
+
+import { getSession, signOut } from "next-auth/react";
 
 const httpLink = new HttpLink({
-    uri: process.env.GRAPHQL_URL as string
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_URL as string
 });
 
+
+ const errorLink = new ErrorLink(({ error, operation }) => {
+   if (CombinedGraphQLErrors.is(error)) {
+     error.errors.forEach(({ message, locations, path }) =>
+       console.log(
+         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+       )
+     );
+   } else if (CombinedProtocolErrors.is(error)) {
+     error.errors.forEach(({ message, extensions }) =>
+       console.log(
+         `[Protocol error]: Message: ${message}, Extensions: ${JSON.stringify(
+           extensions
+         )}`
+       )
+     );
+   } else {
+     console.error(`[Network error]: ${error}`);
+   }
+ });
+ 
 /**
  * Run before every request and merge token into header
  */
@@ -27,5 +54,5 @@ const authLink = new SetContextLink(async ({ headers }) => {
 
 export const client = new ApolloClient({
     cache: new InMemoryCache(),
-    link: httpLink
+    link:errorLink.concat(authLink.concat(httpLink))
 })
