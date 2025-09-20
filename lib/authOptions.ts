@@ -4,6 +4,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import createConnection from "./dbConnection";
 import { User } from "@/model/User";
 import { Token } from "@/model/UserTokens";
+import jwt from 'jsonwebtoken';
 
 const authOptions: NextAuthOptions = {
    providers: [
@@ -48,6 +49,7 @@ const authOptions: NextAuthOptions = {
       async signIn({ account, user, email }) {
 
          if (account?.provider === 'google') {
+          
             const payload = {
                loginType: account.provider,
                expires_at: account.expires_at,
@@ -57,11 +59,13 @@ const authOptions: NextAuthOptions = {
 
                token: account.access_token!,
             };
+            console.log(process.env.NEXT_PUBLIC_SECERT_JWT_KEY,'process.env.SECERT_JWT_KEY')
             await createConnection();
-            const { email, token, expires_at } = payload;
+            const { email, expires_at } = payload;
 
             const formattedExpireat = new Date(expires_at! * 1000)
             const isUserFound = await User.findOne({ email,isactive: true });
+                 
             if (!isUserFound) {
                //create user and get id;
                const newUser = await User.create({
@@ -69,6 +73,10 @@ const authOptions: NextAuthOptions = {
                   loginType: payload.loginType,
                   password: ""
                });
+               const token = jwt.sign({
+                    userId:isUserFound._id,
+                    role:isUserFound.role
+                }, process.env.NEXT_PUBLIC_SECERT_JWT_KEY as string)
                await Token.create({
                   token,
                   userId: newUser._id,
@@ -77,6 +85,10 @@ const authOptions: NextAuthOptions = {
 
 
             } else {
+               const token = jwt.sign({
+                    userId:isUserFound._id,
+                    role:isUserFound.role
+                }, process.env.NEXT_PUBLIC_SECERT_JWT_KEY as string)
                await Token.findOneAndUpdate({ userId: isUserFound._id },
                   { token, expires_at: formattedExpireat },
                   { upsert: true, new: true })
@@ -99,6 +111,7 @@ const authOptions: NextAuthOptions = {
             token.role = userId?.role;
             
             if (currentUserToken) {
+               console .log(currentUserToken.token,'currentUserToken.token')
                token.exptime = currentUserToken.expires_at
                token.accessToken = currentUserToken.token;
             }

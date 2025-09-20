@@ -23,8 +23,8 @@ import { path } from "@/lib/paths";
 
 const Header = () => {
 	const { onLogOut, isOpen, setIsOpen,setIsLoading} = useAuth();
-	const { data } = useSession();
-	const role = data?.user?.role as string;
+	const { user } = useAuth();
+	const role = user?.role as string;
 	const [expandedMenus, setExpandedMenus] = useState<any>({
 		tours: false,
 		settings: false,
@@ -159,15 +159,15 @@ const Header = () => {
 								<div>
 									<Avatar>
 										<AvatarImage
-											src={data?.user?.image as string}
+											src={user?.image as string}
 										/>
 										<AvatarFallback>
-											{data?.user?.name?.substring(0,1)}
+											{user?.username?.substring(0,1)}
 										</AvatarFallback>
 									</Avatar>
 								</div>
 								<div>
-									<h4>{data?.user?.name}</h4>
+									<h4>{user?.username}</h4>
 									<span className="text-gray-500 text-[14px]">
 										{role}
 									</span>
@@ -328,15 +328,15 @@ const Header = () => {
 								<div>
 									<Avatar>
 										<AvatarImage
-											src={data?.user?.image as string}
+											src={user?.image as string}
 										/>
 										<AvatarFallback>
-											{data?.user?.name?.substring(0,1)}
+											{user?.username?.substring(0,1)}
 										</AvatarFallback>
 									</Avatar>
 								</div>
 								<div>
-									<h4>{data?.user?.name}</h4>
+									<h4>{user?.username}</h4>
 									<span className="text-gray-500 text-[14px]">
 										{role}
 									</span>

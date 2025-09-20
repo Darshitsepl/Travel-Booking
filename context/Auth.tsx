@@ -1,5 +1,7 @@
 "use client";
 import Loading from "@/components/Loading";
+import { GetUserProfile } from "@/lib/graphql/Query";
+import { UserProfile } from "@/lib/graphql/type";
 import { signOut, useSession } from "next-auth/react";
 import React, {
 	createContext,
@@ -13,22 +15,28 @@ import { toast } from "sonner";
 interface AuthContextProps {
 	onLogOut: () => void;
 	isOpen: boolean;
+	setUser?:React.Dispatch<SetStateAction<null | UserProfile>>
+	user: null | UserProfile;
 	setIsLoading?: React.Dispatch<SetStateAction<boolean>>;
 	setIsOpen?: React.Dispatch<SetStateAction<boolean>>;
 }
 const authContext = createContext<AuthContextProps>({
 	onLogOut: () => {},
 	isOpen: false,
+	user: null,
 });
 const AuthContext = ({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) => {
-	const [isOpen, setIsOpen] = useState(false);
-
+	const [isOpen, setIsOpen] = useState(true);
+	const [user, setUser] = useState<null | UserProfile>(null);
+	
 	const [isLoading, setIsLoading] = useState(true);
 	const { data, status } = useSession();
+
+	
 
 	const handlerLogOut = async () => {
 		try {
@@ -46,6 +54,7 @@ const AuthContext = ({
 			).json();
 			if (response.status) {
 				try {
+					setUser(null)
 					await signOut({
 						redirect: true,
 						callbackUrl: "/login",
@@ -78,6 +87,8 @@ const AuthContext = ({
 	const ctx: AuthContextProps = {
 		onLogOut: handlerLogOut,
 		setIsOpen,
+		setUser,
+		user,
 		setIsLoading,
 		isOpen,
 	};
