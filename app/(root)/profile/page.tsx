@@ -138,7 +138,7 @@ const Profile = () => {
 				</div>
 
 				{/* Card Content */}
-				<div className="p-6">
+				<div className="p-1 md:p-6">
 					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 						{/* Username Field */}
 						<div className="space-y-2">

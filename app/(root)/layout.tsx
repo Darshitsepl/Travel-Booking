@@ -30,7 +30,7 @@ const MainLayoutProvider = ({ children }: { children: React.ReactNode }) => {
 			<div>
 				<Header />
 			</div>
-			<div className="m-12 px-6	 py-6 overflow-x-hidden  shadow-[0_3px_8px_rgba(0,0,0,0.24)]">
+			<div className="m-2 md:m-12 px-2 py-6 md:px-4 overflow-x-hidden  shadow-[0_3px_8px_rgba(0,0,0,0.24)]">
 				{children}
 			</div>
 		</main>
