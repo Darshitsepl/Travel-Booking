@@ -43,6 +43,7 @@ const Login = () => {
 				redirect: true,
 				token: data.data.token,
 			});
+		
 		setIsLoading(false)
 
 		}else {
