@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx"
+import { toast } from "sonner"
 import Swal, { SweetAlertIcon } from "sweetalert2"
 import { twMerge } from "tailwind-merge"
 
@@ -28,3 +29,11 @@ export const AlertMessage = async (
     buttonsStyling: false // disable default styles so custom classes apply
   })
 }
+
+export const showMutationResult = (response: { status: boolean; message: string }) => {
+  if (response.status) {
+    toast.success(response.message);
+  } else {
+    toast.error(response.message);
+  }
+};

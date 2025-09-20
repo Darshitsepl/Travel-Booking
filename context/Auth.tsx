@@ -1,7 +1,8 @@
 "use client";
 import Loading from "@/components/Loading";
 import { GetUserProfile } from "@/lib/graphql/Query";
-import { UserProfile } from "@/lib/graphql/type";
+import { GetUserProfileResponse, UserProfile } from "@/lib/graphql/type";
+import { useQuery } from "@apollo/client/react";
 import { signOut, useSession } from "next-auth/react";
 import React, {
 	createContext,
@@ -32,6 +33,8 @@ const AuthContext = ({
 }>) => {
 	const [isOpen, setIsOpen] = useState(true);
 	const [user, setUser] = useState<null | UserProfile>(null);
+		//const { data:userData, loading } = useQuery<GetUserProfileResponse>(GetUserProfile);
+	
 	
 	const [isLoading, setIsLoading] = useState(true);
 	const { data, status } = useSession();

@@ -6,6 +6,7 @@ export const GetUserProfile = gql`
         username
         email
         role
+        password
         loginType
         
     }
