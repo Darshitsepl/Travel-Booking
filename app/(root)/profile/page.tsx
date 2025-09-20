@@ -66,7 +66,6 @@ const Profile = () => {
 				},
 			},
 		}).then(async (res) => {
-			console.log(res, "res");
 
 			const response = res.data as unknown as UpdateProfileResponse;
 			const status = response.updateUserProfile.status;
@@ -83,7 +82,7 @@ const Profile = () => {
 			handleCancel();
 
 			toast.success("Profile updated successfully");
-		});
+		})
 	};
 
 	const handleCancel = () => {
@@ -147,7 +146,7 @@ const Profile = () => {
 							</label>
 							{isEdit ? (
 								<CustomInput
-									placeholder="Enter username"
+									placeholder=""
 									value={userName}
 									name="username"
 									onChange={(val) => setUserName(val)}
@@ -171,7 +170,7 @@ const Profile = () => {
 							</label>
 							{isEdit ? (
 								<CustomInput
-									placeholder="Enter email address"
+									placeholder=""
 									value={email}
 									name="email"
 									onChange={(val) => setEmail(val)}

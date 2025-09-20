@@ -8,6 +8,7 @@ const CustomInput: FC<InputProps> = ({
   name,
   control,
   type,
+  isLabelRequire = true,
   value,
   onChange: onParentChange,
   errors,
@@ -27,9 +28,9 @@ const CustomInput: FC<InputProps> = ({
 
   return (
     <div className="flex flex-col gap-1 text-left">
-      <label id={name} className="text-[12px]">
+      {isLabelRequire && <label id={name} className="text-[12px]">
         {placeholder} :
-      </label>
+      </label>}
 
       <div className="relative">
         {control ? (

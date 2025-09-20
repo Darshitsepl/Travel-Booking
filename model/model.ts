@@ -8,4 +8,5 @@ export interface InputProps {
  onChange?: (value: any, ...rest: any[]) => void
  rules?: Partial<RegisterOptions>
  placeholder:string;
+ isLabelRequire?:boolean
 }

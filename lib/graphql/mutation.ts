@@ -8,3 +8,12 @@ export const UpdateProfile = gql`
 		}
 	}
 `;
+
+export const updatePassword = gql`
+ mutation setPasswordForGoogleLogin($data:String!) {
+    setPasswordForGoogleLogin(password: $data) {
+        status
+        message
+    }
+ }
+`

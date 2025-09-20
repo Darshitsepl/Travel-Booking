@@ -5,6 +5,7 @@ export interface UserProfile {
   image:string;
   _id: string
   loginType: string;
+  password: string;
 }
 
 export  interface GetUserProfileResponse {
@@ -23,4 +24,12 @@ export type UpdateProfileResponse ={
 export type UserUpdateProfile  ={
     email: string
     username: string
+}
+
+export type PasswordFields  = {
+  password:string;
+}
+
+export type PasswordResponseFields  = {
+  setPasswordForGoogleLogin:APIResponse;
 }
