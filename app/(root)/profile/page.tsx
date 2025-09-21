@@ -2,12 +2,12 @@
 import CustomInput from "@/components/Input";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/context/Auth";
+import { useMainWrapper } from "@/context/Main";
 import { UpdateProfile } from "@/lib/graphql/mutation";
 import { GetUserProfile } from "@/lib/graphql/Query";
 import { UpdateProfileResponse, UserUpdateProfile } from "@/lib/graphql/type";
-import { useMutation, useQuery } from "@apollo/client/react";
-import { signOut, useSession } from "next-auth/react";
+import { useMutation } from "@apollo/client/react";
+import { signOut } from "next-auth/react";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -24,7 +24,7 @@ const Profile = () => {
 	const [isEdit, setIsEdit] = useState(false);
 	const [userName, setUserName] = useState("");
 	const [email, setEmail] = useState("");
-	const { user } = useAuth();
+	const { user } = useMainWrapper();
 
 	if (isSumitLoading) {
 		return (
@@ -93,7 +93,7 @@ const Profile = () => {
 	};
 
 	return (
-		<div className="p-2 max-w-4xl mx-auto">
+		<div className="p-2 max-w-full  md:max-w-4xl mx-auto">
 			{/* Header Section */}
 			<div className="flex flex-col sm:flex-row sm:justify-end sm:items-center gap-4 mb-8">
 				{isEdit ? (

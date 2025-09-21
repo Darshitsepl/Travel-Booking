@@ -17,13 +17,14 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/context/Auth";
 import { AlertMessage } from "@/lib/utils";
-import { useSession } from "next-auth/react";
 import { MdPassword } from "react-icons/md";
 import { path } from "@/lib/paths";
+import { useMainWrapper } from "@/context/Main";
+import Link from "next/link";
 
 const Header = () => {
 	const { onLogOut, isOpen, setIsOpen,setIsLoading} = useAuth();
-	const { user } = useAuth();
+	const { user } = useMainWrapper();
 	const role = user?.role as string;
 	const [expandedMenus, setExpandedMenus] = useState<any>({
 		tours: false,
@@ -244,7 +245,7 @@ const Header = () => {
 																		</span>
 																	</span>
 																) : (
-																	<a
+																	<Link
 																		key={
 																			index
 																		}
@@ -267,15 +268,15 @@ const Header = () => {
 																				subItem.label
 																			}
 																		</span>
-																	</a>
+																	</Link>
 																)
 														)}
 												</div>
 											)}
 										</div>
 									) : (
-										<a
-											href={item.href}
+										<Link
+											href={item.href as string}
 											className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group"
 										>
 											<item.icon
@@ -285,7 +286,7 @@ const Header = () => {
 											<span className="font-medium">
 												{item.label}
 											</span>
-										</a>
+										</Link>
 									)}
 								</div>
 							))}
@@ -399,7 +400,7 @@ const Header = () => {
 																</span>
 															</span>
 														) : (
-															<a
+															<Link
 																key={index}
 																href={
 																	subItem.href
@@ -421,15 +422,15 @@ const Header = () => {
 																		subItem.label
 																	}
 																</span>
-															</a>
+															</Link>
 														)
 												)}
 											</div>
 										)}
 									</div>
 								) : (
-									<a
-										href={item.href}
+									<Link
+										href={item.href as string}
 										onClick={toggleDrawer}
 										className="flex items-center space-x-3 px-3 py-2 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors group"
 									>
@@ -440,7 +441,7 @@ const Header = () => {
 										<span className="font-medium">
 											{item.label}
 										</span>
-									</a>
+									</Link>
 								)}
 							</div>
 						))}
