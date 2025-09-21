@@ -29,7 +29,7 @@ const MainLayoutProvider = ({ children }: { children: React.ReactNode }) => {
 					<Header />
 				</div>
 
-				<section  className="m-3 md:m-6 p-4 md:p-6 max-w-full mx-auto bg-white rounded-2xl shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px] overflow-y-auto">
+				<section  className="m-0 md:m-6 p-2 md:p-6 max-w-full mx-auto bg-white rounded-2xl shadow-[rgba(100,100,111,0.2)_0px_7px_29px_0px] overflow-y-auto">
 					{children}
 				</section>
 			</main>
