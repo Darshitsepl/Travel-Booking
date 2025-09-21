@@ -15,8 +15,8 @@ import { toast } from "sonner";
 
 interface AuthContextProps {
 	onLogOut: () => void;
+	loading: boolean
 	isOpen: boolean;
-	setUser?:React.Dispatch<SetStateAction<null | UserProfile>>
 	user: null | UserProfile;
 	setIsLoading?: React.Dispatch<SetStateAction<boolean>>;
 	setIsOpen?: React.Dispatch<SetStateAction<boolean>>;
@@ -24,6 +24,7 @@ interface AuthContextProps {
 const authContext = createContext<AuthContextProps>({
 	onLogOut: () => {},
 	isOpen: false,
+	loading: false,
 	user: null,
 });
 const AuthContext = ({
@@ -32,13 +33,23 @@ const AuthContext = ({
 	children: React.ReactNode;
 }>) => {
 	const [isOpen, setIsOpen] = useState(true);
-	const [user, setUser] = useState<null | UserProfile>(null);
+	const { data:userDetails, loading } = useQuery<GetUserProfileResponse>(GetUserProfile);
+
 		//const { data:userData, loading } = useQuery<GetUserProfileResponse>(GetUserProfile);
 	
 	
 	const [isLoading, setIsLoading] = useState(true);
 	const { data, status } = useSession();
 
+	const user = userDetails?.GetUserProfile ?? null;
+		useEffect(() => {
+     window.addEventListener('resize', (e) => {
+		if(window.innerWidth < 786) {
+			console.log('running')
+			setIsOpen!(false);
+		}
+	 })
+	}, [])
 	
 
 	const handlerLogOut = async () => {
@@ -57,7 +68,6 @@ const AuthContext = ({
 			).json();
 			if (response.status) {
 				try {
-					setUser(null)
 					await signOut({
 						redirect: true,
 						callbackUrl: "/login",
@@ -90,14 +100,14 @@ const AuthContext = ({
 	const ctx: AuthContextProps = {
 		onLogOut: handlerLogOut,
 		setIsOpen,
-		setUser,
 		user,
+		loading,
 		setIsLoading,
 		isOpen,
 	};
 	return (
 		<authContext.Provider value={ctx}>
-			{isLoading || status === "loading" ? <Loading /> : children}
+			{isLoading || status === "loading" || loading ? <Loading /> : children}
 		</authContext.Provider>
 	);
 };
