@@ -1,5 +1,4 @@
 "use client";
-import { useAuth } from "@/context/Auth";
 import React from "react";
 import { Button } from "./ui/button";
 import CustomInput from "./Input";
@@ -10,9 +9,10 @@ import {  PasswordResponseFields } from "@/lib/graphql/type";
 import SkelatonLoading from "./SkelatonLoading";
 import { GetUserProfile } from "@/lib/graphql/Query";
 import { showMutationResult } from "@/lib/utils";
+import { useMainWrapper } from "@/context/Main";
 
 const PasswordAlertPopUp = ({ children }: { children: React.ReactNode }) => {
-	const { user } = useAuth();
+	const { user } = useMainWrapper();
 	const [password, setPassword] = useState("");
 	const [mutation, { loading, error }] = useMutation<PasswordResponseFields>(
 		updatePassword,

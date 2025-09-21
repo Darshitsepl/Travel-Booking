@@ -15,17 +15,13 @@ import { toast } from "sonner";
 
 interface AuthContextProps {
 	onLogOut: () => void;
-	loading: boolean
 	isOpen: boolean;
-	user: null | UserProfile;
 	setIsLoading?: React.Dispatch<SetStateAction<boolean>>;
 	setIsOpen?: React.Dispatch<SetStateAction<boolean>>;
 }
 const authContext = createContext<AuthContextProps>({
 	onLogOut: () => {},
 	isOpen: false,
-	loading: false,
-	user: null,
 });
 const AuthContext = ({
 	children,
@@ -33,7 +29,6 @@ const AuthContext = ({
 	children: React.ReactNode;
 }>) => {
 	const [isOpen, setIsOpen] = useState(true);
-	const { data:userDetails, loading } = useQuery<GetUserProfileResponse>(GetUserProfile);
 
 		//const { data:userData, loading } = useQuery<GetUserProfileResponse>(GetUserProfile);
 	
@@ -41,7 +36,6 @@ const AuthContext = ({
 	const [isLoading, setIsLoading] = useState(true);
 	const { data, status } = useSession();
 
-	const user = userDetails?.GetUserProfile ?? null;
 		useEffect(() => {
      window.addEventListener('resize', (e) => {
 		if(window.innerWidth < 786) {
@@ -100,14 +94,12 @@ const AuthContext = ({
 	const ctx: AuthContextProps = {
 		onLogOut: handlerLogOut,
 		setIsOpen,
-		user,
-		loading,
 		setIsLoading,
 		isOpen,
 	};
 	return (
 		<authContext.Provider value={ctx}>
-			{isLoading || status === "loading" || loading ? <Loading /> : children}
+			{isLoading || status === "loading"  ? <Loading /> : children}
 		</authContext.Provider>
 	);
 };
