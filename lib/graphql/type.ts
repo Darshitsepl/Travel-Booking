@@ -26,10 +26,21 @@ export type UserUpdateProfile  ={
     username: string
 }
 
+
+
 export type PasswordFields  = {
   password:string;
 }
 
 export type PasswordResponseFields  = {
   setPasswordForGoogleLogin:APIResponse;
+}
+
+export type ChangePasswordFields  ={
+ oldPassword: string;
+ newPassword: string;
+}
+
+export  interface ChangePasswordResponse {
+  changePassword: APIResponse;
 }
