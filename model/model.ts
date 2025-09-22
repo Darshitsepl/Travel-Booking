@@ -2,6 +2,7 @@ import { Control, FieldErrors, FieldValues, RegisterOptions } from "react-hook-f
 export interface InputProps {
  name:string;
  value: string;
+ onBlur?:() => void;
  control?:Control<any>
  type?:React.HTMLInputTypeAttribute
  errors?: FieldErrors<FieldValues>

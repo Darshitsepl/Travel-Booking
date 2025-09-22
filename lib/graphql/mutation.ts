@@ -17,3 +17,12 @@ export const updatePassword = gql`
     }
  }
 `
+
+export const changePassword = gql`
+  mutation changePassword($type: ChangePasswordFields!) {
+	changePassword(data: $type) {
+		status
+		message
+	}
+  }
+`

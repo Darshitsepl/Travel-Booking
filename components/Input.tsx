@@ -7,6 +7,7 @@ import { InputProps } from "@/model/model";
 const CustomInput: FC<InputProps> = ({
   name,
   control,
+  onBlur,
   type,
   isLabelRequire = true,
   value,
@@ -27,7 +28,7 @@ const CustomInput: FC<InputProps> = ({
     type === "password" ? (showPassword ? "text" : "password") : type ?? "text";
 
   return (
-    <div className="flex flex-col gap-1 text-left">
+    <div className="flex flex-col gap-1 text-left w-full">
       {isLabelRequire && <label id={name} className="text-[12px]">
         {placeholder} :
       </label>}
@@ -42,6 +43,11 @@ const CustomInput: FC<InputProps> = ({
               <>
                 <Input
                   type={computedType}
+                  onBlur={() => {
+                    if(onBlur) {
+                      onBlur()
+                    }
+                  }}
                   placeholder={placeholder}
                   value={value}
                   className={`${inputClass} pr-10`} // extra padding for icon
@@ -70,6 +76,11 @@ const CustomInput: FC<InputProps> = ({
               name={name}
               type={computedType}
               placeholder={placeholder}
+                 onBlur={() => {
+                    if(onBlur) {
+                      onBlur()
+                    }
+                  }}
               className={`${inputClass} pr-10`}
               onChange={(e) => {
                 if (onParentChange) {
