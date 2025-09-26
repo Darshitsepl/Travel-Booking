@@ -17,13 +17,13 @@ const authOptions: NextAuthOptions = {
          credentials: {
             username: { label: "User Name", type: "text" },
             email: { label: "Email", type: "text" },
-            loginType: {label: "Login Type", type: "text"},
+            loginType: { label: "Login Type", type: "text" },
             password: { label: "Password", type: "text" },
             token: { label: "Token", type: 'text' },
             exptime: { label: "Expiry Time", type: 'text' },
             role: { label: 'Role', type: "text" },
             image: { label: 'image', type: "text" },
-            userId: {label: "User Id", type: "text"}
+            userId: { label: "User Id", type: "text" }
 
 
          },
@@ -36,7 +36,7 @@ const authOptions: NextAuthOptions = {
 
                return {
                   ...credentials,
-                  id:credentials.userId,
+                  id: credentials.userId,
                   loginType: 'credentials'
                };
             }
@@ -49,7 +49,7 @@ const authOptions: NextAuthOptions = {
       async signIn({ account, user, email }) {
 
          if (account?.provider === 'google') {
-          
+
             const payload = {
                loginType: account.provider,
                expires_at: account.expires_at,
@@ -59,36 +59,20 @@ const authOptions: NextAuthOptions = {
 
                token: account.access_token!,
             };
-            console.log(process.env.NEXT_PUBLIC_SECERT_JWT_KEY,'process.env.SECERT_JWT_KEY')
             await createConnection();
             const { email, expires_at } = payload;
 
             const formattedExpireat = new Date(expires_at! * 1000)
-            const isUserFound = await User.findOne({ email,isactive: true });
-                 
+            const isUserFound = await User.findOne({ email, isactive: true });
+
             if (!isUserFound) {
                //create user and get id;
-               const newUser = await User.create({
-                  ...payload,
-                  loginType: payload.loginType,
-                  password: ""
-               });
-               const token = jwt.sign({
-                    userId:isUserFound._id,
-                    role:isUserFound.role
-                }, process.env.NEXT_PUBLIC_SECERT_JWT_KEY as string)
-               await Token.create({
-                  token,
-                  userId: newUser._id,
-                  expires_at: formattedExpireat
-               })
-
-
+               throw new Error('Please register first')
             } else {
                const token = jwt.sign({
-                    userId:isUserFound._id,
-                    role:isUserFound.role
-                }, process.env.NEXT_PUBLIC_SECERT_JWT_KEY as string)
+                  userId: isUserFound._id,
+                  role: isUserFound.role
+               }, process.env.NEXT_PUBLIC_SECERT_JWT_KEY as string)
                await Token.findOneAndUpdate({ userId: isUserFound._id },
                   { token, expires_at: formattedExpireat },
                   { upsert: true, new: true })
@@ -97,21 +81,20 @@ const authOptions: NextAuthOptions = {
             return true
          }
 
-         
+
          return true
       },
       async jwt({ user, token }) {
-         
+
          if (user) {
             await createConnection();
-            const userId = await User.findOne({ email: user.email,isactive: true });
+            const userId = await User.findOne({ email: user.email, isactive: true });
             const currentUserToken = await Token.findOne({ userId: userId?._id });
             token.userId = userId?._id.toString()
             token.name = userId?.username;
             token.role = userId?.role;
-            
+
             if (currentUserToken) {
-               console .log(currentUserToken.token,'currentUserToken.token')
                token.exptime = currentUserToken.expires_at
                token.accessToken = currentUserToken.token;
             }
@@ -142,13 +125,15 @@ const authOptions: NextAuthOptions = {
 
       },
 
-     
+
 
    }
    ,
    pages: {
       signIn: "/login",
+      error: "/login"
    },
+
    secret: process.env.NEXTAUTH_SECRET
 };
 

@@ -11,6 +11,7 @@ import { handleApi, LoginWithGoogleFields } from "@/service/Auth";
 import APIClient from "@/service/interceptor";
 import { endPoints } from "@/service/endPoints";
 import { toast } from "sonner";
+import { useSearchParams } from "next/navigation";
 
 const Login = () => {
 	const {
@@ -22,6 +23,9 @@ const Login = () => {
 		formState: { errors },
 	} = useForm<LoginFormValues>();
     const [isLoading, setIsLoading] = useState(false);
+	const params = useSearchParams();
+	const error = params.get('error');
+
 	useEffect(() => {
 		document.body.style.overflow = "hidden";
 	}, []);
@@ -58,13 +62,21 @@ const Login = () => {
 
 	const handlerLoginWithGoogle = async () => {
 		setIsLoading(true);
+		try {
 		await signIn("google", { redirect: true, callbackUrl: "/" });
 		setIsLoading(false);
+		} catch (error) {
+		setIsLoading(false);
+		}
 	};
+	
 	return (
 		<div className="flex flex-col gap-3">
 			<h2 className="main-header text-primary-400">Welcome Back</h2>
 			<div>
+				{error && <div className="flex mb-2 bg-red-300 p-2 rounded-sm">
+					 <h4 className="error-message text-red-500">{error}</h4>
+					 </div>}
 				<form>
 					<Form
 						getValues={getValues}
@@ -77,6 +89,7 @@ const Login = () => {
 						handlerRegister={handlerLogin}
 					/>
 				</form>
+				
 			</div>
 			<div className="divider">
 				<h4>OR</h4>

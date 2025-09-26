@@ -7,7 +7,8 @@ import { UpdateProfile } from "@/lib/graphql/mutation";
 import { GetUserProfile } from "@/lib/graphql/Query";
 import { UpdateProfileResponse, UserUpdateProfile } from "@/lib/graphql/type";
 import { useMutation } from "@apollo/client/react";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
@@ -25,7 +26,7 @@ const Profile = () => {
 	const [userName, setUserName] = useState("");
 	const [email, setEmail] = useState("");
 	const { user } = useMainWrapper();
-
+     const {data} = useSession()
 	if (isSumitLoading) {
 		return (
 			<div className="p-6">
@@ -138,8 +139,14 @@ const Profile = () => {
 
 				{/* Card Content */}
 				<div className="p-1 md:p-6">
-					<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+					<div className={`grid grid-cols-1 
+						md:grid-cols-${data?.user?.image ? 3 : 2}
+						gap-3`}>
 						{/* Username Field */}
+						
+						{data?.user?.image && <div className="space-y-2 text-center flex justify-center rounded-full">
+							<Image className="rounded-full" src= {data?.user?.image} alt={data?.user?.name!} width={100} height={100}/>
+						</div>}
 						<div className="space-y-2">
 							<label className="text-sm font-medium text-gray-700">
 								Username (Role: {userDetails?.role})
