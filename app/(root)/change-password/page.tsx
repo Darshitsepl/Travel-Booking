@@ -2,7 +2,7 @@
 import CustomInput from "@/components/Input";
 import SkelatonLoading from "@/components/SkelatonLoading";
 import Title from "@/components/Title";
-import { Button } from "@/components/ui/button";
+import Button from '@mui/material/Button';
 import { changePassword } from "@/lib/graphql/mutation";
 import { ChangePasswordResponse } from "@/lib/graphql/type";
 import { useMutation } from "@apollo/client/react";
@@ -91,7 +91,7 @@ const ChangePassword = () => {
 					name={"newPassword"}
 				/>
 				<div className="">
-					<Button onClick={handleSubmit(onSubmt)} className="add-form-button">Change Password</Button>
+					<Button variant="contained" onClick={handleSubmit(onSubmt)} className="add-form-button">Change Password</Button>
 				</div>
 			</div>
 		</div>

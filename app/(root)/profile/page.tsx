@@ -1,6 +1,6 @@
 "use client";
 import CustomInput from "@/components/Input";
-import { Button } from "@/components/ui/button";
+import Button from '@mui/material/Button';
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMainWrapper } from "@/context/Main";
 import { UpdateProfile } from "@/lib/graphql/mutation";
@@ -100,13 +100,15 @@ const Profile = () => {
 				{isEdit ? (
 					<>
 						<Button
-							variant="outline"
+							variant="outlined"
 							onClick={handleCancel}
 							className="px-4 py-2"
 						>
 							Cancel
 						</Button>
 						<Button
+							variant="contained"
+
 							onClick={handleSave}
 							className="px-4 py-2 bg-blue-600 hover:bg-blue-700"
 						>
@@ -115,6 +117,7 @@ const Profile = () => {
 					</>
 				) : (
 					<Button
+					variant="contained"
 						onClick={handleEditToggle}
 						className="px-4 py-2 bg-slate-700 hover:bg-slate-800"
 					>
