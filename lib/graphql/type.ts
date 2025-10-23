@@ -1,6 +1,7 @@
 export interface UserProfile {
   username: string;
   email: string;
+  password: string
   role: string;
   image: string;
   _id: string
