@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Button } from "./ui/button";
+import { Button } from "@mui/material";
 import CustomInput from "./Input";
 import { useState } from "react";
 import { useMutation } from "@apollo/client/react";
@@ -63,6 +63,7 @@ const PasswordAlertPopUp = ({ children }: { children: React.ReactNode }) => {
 							placeholder={"Enter Password"}
 						/>
 						<Button
+						    variant="contained"
 							disabled={!password}
 							className="add-form-button"
 							onClick={onPasswordSubmit}

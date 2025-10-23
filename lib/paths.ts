@@ -4,6 +4,10 @@ export const path  ={
         add: "/tours/add",
         list: "/tours"
     },
+    guide: {
+        assign: "/guide/assign-guide",
+        list: "/guide/guides"
+    },
     booking: '/my-booking',
     profile: "/profile",
     changePassword: "/change-password",

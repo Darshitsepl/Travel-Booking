@@ -1,10 +1,12 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import React, { useState } from "react";
+
 import {
 	Menu,
 	X,
 	BarChart3,
+	
 	MapPin,
 	Plus,
 	Calendar,
@@ -12,6 +14,7 @@ import {
 	Settings,
 	User,
 	LogOut,
+	Compass,
 	ChevronDown,
 	ChevronRight,
 } from "lucide-react";
@@ -64,6 +67,27 @@ const Header = () => {
 			accessRole: ["User", "Admin"],
 			icon: BarChart3,
 			href: path.home,
+		},
+		{
+			id: "Guide",
+			label: 'Guide',
+			icon: Compass,
+				accessRole: ["Admin"],
+			hasSubmenu: true,
+			submenu: [
+				{
+					label: "Guides",
+					href: path.guide.list,
+					icon: Compass,
+					accessRole: ["Admin"],
+				},
+					{
+					label: "Assign Guide",
+					href: path.guide.assign,
+					icon: Compass,
+					accessRole: ["Admin"],
+				},
+			]
 		},
 		{
 			id: "tours",

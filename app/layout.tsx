@@ -30,6 +30,7 @@ export default async function RootLayout({
 	return (
 		<html lang="en">
 			<head>
+				
 				<link rel="icon" href="/travel.png" sizes="20" />
 			</head>
 			<body className={Robot.className}>
